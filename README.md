@@ -15,3 +15,7 @@ touch .env.development .env.test
 ```
 
 Inside of each you want to set the environment variable PGDATABASE to your development and test databases respectivley
+
+### Log files
+
+It's important that you create a logfiles folder for the express middleware to write to. This feature can be disabled by simply commenting out the middleware from the top of app.js

@@ -6,6 +6,9 @@ const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 
 const app = express();
 
+//Express middleware for handling incoming JSON
+app.use(express.json());
+
 //Create an entry in LOG_PATH everytime a request is recieved
 app.use((req, _res, next) => {
   let date = new Date(Date.now());
@@ -18,6 +21,7 @@ app.use((req, _res, next) => {
   );
   next();
 });
+
 //Endpoints
 app.get("/api/topics", getTopics);
 
