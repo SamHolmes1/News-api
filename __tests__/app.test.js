@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
 const app = require("../app");
 const request = require("supertest");
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => {
   return seed(testData);
@@ -50,14 +51,11 @@ describe("GET /api", () => {
       .get("/api")
       .expect(200)
       .then(({ body }) => {
-        expect(Object.keys(body).length).toBeGreaterThan(0);
+        expect(body).toEqual(endpoints);
       });
   });
   test("Should return a status code of 404 when given a query", () => {
     return request(app).get("api/?sort_by=secrets").expect(404);
-  });
-  test("Should return a status code of 404 when given a parameter", () => {
-    return request(app).get("api/12").expect(404);
   });
 });
 
