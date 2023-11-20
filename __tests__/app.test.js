@@ -109,3 +109,9 @@ describe("Incorrect endpoints", () => {
       });
   });
 });
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("Should return a status code of 200", () => {
+    return request(app).get("/api/articles/1/comments").expect(200);
+  });
+});
