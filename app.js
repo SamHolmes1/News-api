@@ -1,13 +1,9 @@
 const express = require("express");
 const fs = require("fs/promises");
 
-<<<<<<< HEAD
-const { getTopics } = require("./Controller/topics.controller");
 const { getArticleById } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
-=======
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
->>>>>>> main
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
 
