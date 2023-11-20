@@ -109,3 +109,36 @@ describe("Incorrect endpoints", () => {
       });
   });
 });
+
+describe("GET /api/articles", () => {
+  test("Should respond with a status code of 200", () => {
+    return request(app).get("/api/articles").expect(200);
+  });
+  test("Should return array of objects containing correct properties", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        if (body.length > 0) {
+          body.forEach((element) => {
+            expect(element).toMatchObject({
+              title: expect.any(String),
+              topic: expect.any(String),
+              author: expect.any(String),
+              created_at: expect.any(String),
+              article_img_url: expect.any(String),
+            });
+          });
+        } else {
+          expect(false).toBe(true);
+        }
+      });
+  });
+  test("Should return object sorted by created_at value", () => {
+    return request(app)
+      .get("/api/articles")
+      .then(({ body }) => {
+        expect(body).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+});

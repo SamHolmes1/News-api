@@ -16,3 +16,17 @@ exports.queryByArticleId = function (param) {
       }
     });
 };
+
+exports.QueryAllArticles = function () {
+  // The articles should be sorted by date in descending order
+  // There should not be a body property on any of the objects
+  return db.query("SELECT * FROM articles").then(({ rows }) => {
+    let copyOfData = [...rows];
+    copyOfData.forEach((element) => {
+      if (element.hasOwnProperty("body")) {
+        delete element.body;
+      }
+    });
+    return copyOfData.sort(({ created_at: a }, { created_at: b }) => b - a);
+  });
+};
