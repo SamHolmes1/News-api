@@ -1,6 +1,8 @@
 const express = require("express");
 const fs = require("fs/promises");
 
+const { getArticleById } = require("./Controller/articles.controller");
+const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
@@ -21,11 +23,15 @@ app.use((req, _res, next) => {
 //Endpoints
 app.get("/api/topics", getTopics);
 
+app.get("/api/articles/:article_id", getArticleById);
 app.get("/api", getEndPoints);
 
 //Handle unrouted urls
 app.all("*", (_req, res) => {
   res.status(404).send({ msg: "Endpoint does not exist!" });
 });
+
+//Error handling middleware
+app.use(handleInvalidQuery);
 
 module.exports = app;

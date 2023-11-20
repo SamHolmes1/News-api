@@ -42,6 +42,43 @@ describe("GET /api/topics", () => {
   });
 });
 
+describe("GET /api/articles/:article_id", () => {
+  test("should respond with a status code of 200 when given valid ID", () => {
+    return request(app).get("/api/articles/1").expect(200);
+  });
+  test("Should respond with an object containing the correct keys when given valid query", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          article_img_url: expect.any(String),
+        });
+      });
+  });
+  test("Should respond with correct error message and status when given out of bounds article_id", () => {
+    return request(app)
+      .get("/api/articles/400")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article does not exist");
+      });
+  });
+  test("Should respond with correct error message and status when incorrect article_id type", () => {
+    return request(app)
+      .get("/api/articles/Hello")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid parameter");
+      });
+  });
+});
 describe("GET /api", () => {
   test("should respond with a status code of 200", () => {
     return request(app).get("/api").expect(200);
