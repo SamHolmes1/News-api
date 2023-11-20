@@ -110,19 +110,19 @@ describe("Incorrect endpoints", () => {
   });
 });
 
-// describe("GET /api/articles/:article_id/comments", () => {
-//   test("Should return a status code of 200", () => {
-//     return request(app).get("/api/articles/1/comments").expect(200);
-//   });
-//   test("Should return an array of all comments", () => {
-//     return request(app)
-//       .get("/api/articles/2/comments")
-//       .expect(200)
-//       .then(({ body }) => {
-//         console.log(body);
-//       });
-//   });
-//   test("Should return a status code of 400 when given invalid parameter", () => {
-//     return request(app).get("/api/articles/Hello/comments").expect(400);
-//   });
-// });
+describe("GET /api/articles/:article_id/comments", () => {
+  test("Should return a status code of 200", () => {
+    return request(app).get("/api/articles/1/comments").expect(200);
+  });
+  test("Should return an array of all comments", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toBeSortedBy("created_at", {
+          descending: "true",
+        });
+      });
+  });
+  //Need to finish testing
+});
