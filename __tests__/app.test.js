@@ -41,6 +41,29 @@ describe("GET /api/topics", () => {
   });
 });
 
+describe("GET /api/articles/:article_id", () => {
+  test("should respond with a status code of 200 when given valid ID", () => {
+    return request(app).get("/api/articles/1").expect(200);
+  });
+  test("Should respond with an object containing the correct keys when given valid query", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          article_img_url: expect.any(String),
+        });
+      });
+  });
+  test("Should respond with an object", () => {});
+});
+
 describe("Incorrect endpoints", () => {
   test("should respond with a status code of 400", () => {
     return request(app).get("/api/passwords").expect(404);
