@@ -1,5 +1,7 @@
 const db = require("../db/connection");
 
 exports.createTopicsArray = function () {
-  console.log("Hello from Model");
+  return db.query("SELECT * FROM topics").then(({ rows }) => {
+    return rows;
+  });
 };

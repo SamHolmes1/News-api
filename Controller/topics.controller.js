@@ -1,6 +1,7 @@
 const { createTopicsArray } = require("../Models/topics.model");
 
 exports.getTopics = function (req, res, next) {
-  console.log("Hello from controller");
-  res.status(200).send({});
+  createTopicsArray().then((data) => {
+    res.status(200).send(data);
+  });
 };

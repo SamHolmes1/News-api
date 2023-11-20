@@ -1,9 +1,8 @@
 const express = require("express");
 const fs = require("fs/promises");
+
 const { getTopics } = require("./Controller/topics.controller");
-
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
-
 const app = express();
 
 //Express middleware for handling incoming JSON
@@ -26,13 +25,8 @@ app.use((req, _res, next) => {
 app.get("/api/topics", getTopics);
 
 //Handle unrouted urls
-app.all("*", () => {
-  throw new Error("Bad request");
-});
-
-//Catch errors thrown by app.all(*)
-app.use((err, _req, res, _next) => {
-  res.status(500).send(err);
+app.all("*", (_req, res) => {
+  res.status(404).send({ msg: "Endpoint does not exist!" });
 });
 
 module.exports = app;
