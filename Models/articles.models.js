@@ -17,16 +17,18 @@ exports.queryByArticleId = function (param) {
     });
 };
 
-exports.QueryAllArticles = function () {
-  // The articles should be sorted by date in descending order
-  // There should not be a body property on any of the objects
-  return db.query("SELECT * FROM articles").then(({ rows }) => {
-    let copyOfData = [...rows];
-    copyOfData.forEach((element) => {
-      if (element.hasOwnProperty("body")) {
-        delete element.body;
-      }
+exports.queryAllArticles = function () {
+  return db
+    .query(
+      `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id) AS comment_count 
+      FROM comments 
+      INNER JOIN articles 
+      ON articles.article_id = comments.article_id
+      GROUP BY articles.article_id
+      ORDER BY articles.created_at DESC;`
+    )
+    .then(({ rows }) => {
+      console.log(rows);
+      return { articles: rows };
     });
-    return copyOfData.sort(({ created_at: a }, { created_at: b }) => b - a);
-  });
 };

@@ -119,14 +119,15 @@ describe("GET /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then(({ body }) => {
-        if (body.length > 0) {
-          body.forEach((element) => {
+        if (body.articles.length > 0) {
+          body.articles.forEach((element) => {
             expect(element).toMatchObject({
               title: expect.any(String),
               topic: expect.any(String),
               author: expect.any(String),
               created_at: expect.any(String),
               article_img_url: expect.any(String),
+              comment_count: expect.any(String),
             });
           });
         } else {
@@ -138,7 +139,7 @@ describe("GET /api/articles", () => {
     return request(app)
       .get("/api/articles")
       .then(({ body }) => {
-        expect(body).toBeSortedBy("created_at", { descending: true });
+        expect(body.articles).toBeSortedBy("created_at", { descending: true });
       });
   });
 });

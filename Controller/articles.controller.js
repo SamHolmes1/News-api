@@ -1,6 +1,6 @@
 const {
   queryByArticleId,
-  QueryAllArticles,
+  queryAllArticles,
 } = require("../Models/articles.models");
 
 exports.getArticleById = function (req, res, next) {
@@ -12,7 +12,7 @@ exports.getArticleById = function (req, res, next) {
 };
 
 exports.getAllArticles = function (_req, res) {
-  QueryAllArticles().then((data) => {
+  queryAllArticles().then((data) => {
     res.status(200).send(data);
   });
 };
