@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
 const app = require("../app");
 const request = require("supertest");
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => {
   return seed(testData);
@@ -29,7 +30,7 @@ describe("GET /api/topics", () => {
             });
           });
         } else {
-          fail("request did not return an array");
+          expect(false).toBe(true);
         }
       });
   });
@@ -38,6 +39,23 @@ describe("GET /api/topics", () => {
   });
   test("Should return a status code of 404 when given a parameter", () => {
     return request(app).get("api/topics/5").expect(404);
+  });
+});
+
+describe("GET /api", () => {
+  test("should respond with a status code of 200", () => {
+    return request(app).get("/api").expect(200);
+  });
+  test("should respond with an object containing all specified API endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual(endpoints);
+      });
+  });
+  test("Should return a status code of 404 when given a query", () => {
+    return request(app).get("api/?sort_by=secrets").expect(404);
   });
 });
 

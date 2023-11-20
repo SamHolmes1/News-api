@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs/promises");
 
-const { getTopics } = require("./Controller/topics.controller");
+const { getTopics, getEndPoints } = require("./Controller/topics.controller");
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
 
@@ -20,6 +20,8 @@ app.use((req, _res, next) => {
 
 //Endpoints
 app.get("/api/topics", getTopics);
+
+app.get("/api", getEndPoints);
 
 //Handle unrouted urls
 app.all("*", (_req, res) => {

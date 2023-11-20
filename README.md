@@ -19,3 +19,7 @@ Inside of each you want to set the environment variable PGDATABASE to your devel
 ### Log files
 
 It's important that you create a logfiles folder for the express middleware to write to. This feature can be disabled by simply commenting out the middleware from the top of app.js
+
+## Endpoints
+
+A list of all endpoints can be found in endpoints.json.Or alternatively, you can make a GET request to /api to localhost:PORT to recieve an object containing all endpoints.
