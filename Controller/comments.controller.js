@@ -1,6 +1,9 @@
-const { queryCommentsById } = require("../Models/comments.model");
+const { queryCommentsByArticleId } = require("../Models/comments.model");
 
-exports.getCommentsById = function (req, res) {
-  res.status(200).semd({});
-  queryCommentsById();
+exports.getCommentsById = function (req, res, next) {
+  queryCommentsByArticleId(req.params)
+    .then(() => {
+      res.status(200).send({});
+    })
+    .catch(next);
 };

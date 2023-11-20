@@ -26,9 +26,10 @@ app.get("/api/topics", getTopics);
 
 app.get("/api/articles/:article_id", getArticleById);
 
+app.get("/api/articles/:article_id/comments", getCommentsById);
+
 app.get("/api", getEndPoints);
 
-app.get("/api/articles/:article_id/comments", getCommentsById);
 //Handle unrouted urls
 app.all("*", (_req, res) => {
   res.status(404).send({ msg: "Endpoint does not exist!" });
