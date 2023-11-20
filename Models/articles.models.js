@@ -1,10 +1,13 @@
 const db = require("../db/connection");
 
 exports.queryByArticleId = function (param) {
-  const article_id = param.article_id;
   return db
-    .query("SELECT * FROM articles WHERE article_id = $1", [article_id])
+    .query("SELECT * FROM articles WHERE article_id = $1", [param.article_id])
     .then(({ rows }) => {
-      return rows[0];
+      if (rows.length === 0) {
+        return Promise.reject({ status: 400, msg: "Article does not exist" });
+      } else {
+        return rows[0];
+      }
     });
 };

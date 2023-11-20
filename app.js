@@ -3,6 +3,7 @@ const fs = require("fs/promises");
 
 const { getTopics } = require("./Controller/topics.controller");
 const { getArticleById } = require("./Controller/articles.controller");
+const { handleInvalidQuery } = require("./errorhandler");
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
 
@@ -27,5 +28,8 @@ app.get("/api/articles/:article_id", getArticleById);
 app.all("*", (_req, res) => {
   res.status(404).send({ msg: "Endpoint does not exist!" });
 });
+
+//Error handling middleware
+app.use(handleInvalidQuery);
 
 module.exports = app;
