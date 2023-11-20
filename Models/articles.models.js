@@ -16,3 +16,19 @@ exports.queryByArticleId = function (param) {
       }
     });
 };
+
+exports.queryAllArticles = function () {
+  return db
+    .query(
+      `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id) AS comment_count 
+      FROM comments 
+      INNER JOIN articles 
+      ON articles.article_id = comments.article_id
+      GROUP BY articles.article_id
+      ORDER BY articles.created_at DESC;`
+    )
+    .then(({ rows }) => {
+      console.log(rows);
+      return { articles: rows };
+    });
+};
