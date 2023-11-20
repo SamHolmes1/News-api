@@ -62,15 +62,20 @@ describe("GET /api/articles/:article_id", () => {
         });
       });
   });
-  test("Should respond with a status code 400 when given invalid article_id", () => {
-    return request(app).get("/api/articles/300").expect(400);
-  });
-  test("Should respond with correct error message when given invalid article_id", () => {
+  test("Should respond with correct error message and status when given out of bounds article_id", () => {
     return request(app)
       .get("/api/articles/400")
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Article does not exist");
+      });
+  });
+  test("Should respond with correct error message and status when incorrect article_id type", () => {
+    return request(app)
+      .get("/api/articles/Hello")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid parameter");
       });
   });
 });
