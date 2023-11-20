@@ -14,4 +14,4 @@ After setup, you'll want to create two files;
 touch .env.development .env.test
 ```
 
-Inside of each you want to set the environment variable PGDATABASE to your development and test databases respectivley
+Inside of each you want to set the environment variable PGDATABASE to your development and test databases respectivley.
