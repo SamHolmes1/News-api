@@ -43,5 +43,5 @@ exports.getCommentsById = function (req, res, next) {
 };
 
 exports.deleteCommentById = function () {
-  removeCommentsById();
+  removeCommentsById().then(() => {});
 };
