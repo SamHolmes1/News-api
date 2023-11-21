@@ -124,5 +124,21 @@ describe("GET /api/articles/:article_id/comments", () => {
         });
       });
   });
-  //Need to finish testing
+  test("Should return a status code of 404 when given correct data but no comments exist", () => {
+    //No comments exist at article 2
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual([]);
+      });
+  });
+  test("Should return a status code of 400 when given wrong type of parameter", () => {
+    return request(app)
+      .get("/api/articles/Hello/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid parameter");
+      });
+  });
 });

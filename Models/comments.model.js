@@ -11,11 +11,10 @@ exports.queryCommentsByArticleId = function (param) {
       [param.article_id]
     )
     .then(({ rows }) => {
-      console.log(rows);
       if (rows.length === 0) {
         return Promise.reject({
-          status: 400,
-          msg: "No comments on given article",
+          status: 404,
+          msg: [],
         });
       } else {
         return rows;
