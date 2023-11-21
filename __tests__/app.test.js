@@ -290,3 +290,54 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("Should return a 201 when given correctly formed data", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 5 })
+      .expect(201);
+  });
+  test("Should return the updated votes object when given positive integer", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 5 })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article: 1 updated to 105");
+      });
+  });
+  test("Should return the updated votes object when given negative integer", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -5 })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article: 1 updated to 95");
+      });
+  });
+  test("Should 400 when given wrong type of inc_votes", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "Hello" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid parameter");
+      });
+  });
+  test("Should 400 when given wrong property ", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ votes: 12 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid parameter");
+      });
+  });
+  test("Should return a 404 when given article_id out of scope", () => {
+    return request(app)
+      .patch("/api/articles/100000")
+      .send({ inc_votes: 5 })
+      .expect(404);
+  });
+});
