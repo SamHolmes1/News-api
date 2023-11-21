@@ -21,4 +21,10 @@ exports.queryCommentsByArticleId = function (param) {
     });
 };
 
-exports.removeCommentsById = function () {};
+exports.removeCommentsById = function (param) {
+  // Check data type before passing to the database to keep malformed data away from the database
+  if (isNaN(+param)) {
+    return Promise.reject({ status: 400, msg: "Invalid parameter" });
+  }
+  return db.query("DELETE FROM comments WHERE comment_id = $1", [param]);
+};

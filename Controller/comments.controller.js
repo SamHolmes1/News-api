@@ -42,6 +42,17 @@ exports.getCommentsById = function (req, res, next) {
     .catch(next);
 };
 
-exports.deleteCommentById = function () {
-  removeCommentsById().then(() => {});
+exports.deleteCommentById = function (req, res, next) {
+  const comment_id = req.params.comment_id;
+
+  const promises = [
+    checkExists("comments", "comment_id", comment_id),
+    removeCommentsById(comment_id),
+  ];
+
+  Promise.all(promises)
+    .then(() => {
+      res.status(204).send({});
+    })
+    .catch(next);
 };
