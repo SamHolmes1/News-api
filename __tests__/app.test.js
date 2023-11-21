@@ -341,3 +341,9 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(404);
   });
 });
+
+// describe("DELETE /api/comments/:comment_id", () => {
+//   test("Should return status code 200 when given valid comment_id", () => {
+//     return request(app).delete("/api/comments/2").expect(200);
+//   });
+// });
