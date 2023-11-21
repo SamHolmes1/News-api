@@ -110,6 +110,63 @@ describe("Incorrect endpoints", () => {
   });
 });
 
+describe("GET /api/articles/:article_id/comments", () => {
+  test("Should return a status code of 200", () => {
+    return request(app).get("/api/articles/1/comments").expect(200);
+  });
+  test("Should return an array of all comments with correct properties", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        body.comments.forEach((element) => {
+          expect(element).toMatchObject({
+            comment_id: expect.any(Number),
+            body: expect.any(String),
+            article_id: expect.any(Number),
+            author: expect.any(String),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+          });
+        });
+      });
+  });
+  test("Should return an array of all comments sorted by date", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toBeSortedBy("created_at", {
+          descending: "true",
+        });
+      });
+  });
+  test("Should return a status code of 200 when given correct data but no comments exist", () => {
+    //No comments exist at article 2
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toEqual([]);
+      });
+  });
+  test("Should return a status code of 400 when given correct parameter that is out of bounds", () => {
+    return request(app)
+      .get("/api/articles/100000/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("100000 does not exist");
+      });
+  });
+  test("Should return a status code of 400 when given wrong type of parameter", () => {
+    return request(app)
+      .get("/api/articles/Hello/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid parameter");
+      });
+  });
+});
 describe("GET /api/articles", () => {
   test("Should respond with a status code of 200", () => {
     return request(app).get("/api/articles").expect(200);
