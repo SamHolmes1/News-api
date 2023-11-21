@@ -20,3 +20,5 @@ exports.queryCommentsByArticleId = function (param) {
       return rows;
     });
 };
+
+exports.removeCommentsById = function () {};

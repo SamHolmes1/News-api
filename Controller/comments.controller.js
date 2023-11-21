@@ -1,4 +1,7 @@
-const { createNewComment } = require("../Models/comments.model");
+const {
+  createNewComment,
+  removeCommentsById,
+} = require("../Models/comments.model");
 const { queryCommentsByArticleId } = require("../Models/comments.model");
 const { checkExists } = require("../mvc.utils");
 
@@ -37,4 +40,8 @@ exports.getCommentsById = function (req, res, next) {
       res.status(200).send({ comments: data[1] });
     })
     .catch(next);
+};
+
+exports.deleteCommentById = function () {
+  removeCommentsById();
 };

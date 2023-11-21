@@ -7,9 +7,13 @@ const {
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
-const { postNewComment } = require("./Controller/comments.controller");
+const {
+  postNewComment,
+  deleteCommentById,
+} = require("./Controller/comments.controller");
 
 const { getCommentsById } = require("./Controller/comments.controller");
+
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
 
@@ -42,6 +46,11 @@ app.get("/api", getEndPoints);
 
 //Post Endpoints
 app.post("/api/articles/:article_id/comments", postNewComment);
+
+//Patch Endpoints
+
+//Delete Endpoints
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 //Handle unrouted urls
 app.all("*", (_req, res) => {
