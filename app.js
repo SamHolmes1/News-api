@@ -4,10 +4,10 @@ const fs = require("fs/promises");
 const {
   getArticleById,
   getAllArticles,
-  postNewComment,
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
+const { postNewComment } = require("./Controller/comments.controller");
 
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();

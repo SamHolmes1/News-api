@@ -207,4 +207,29 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("20000 does not exist");
       });
   });
+  test("Should create a new entry into the database", () => {
+    const inputObject = {
+      username: "rogersop",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(201)
+      .then(() => {
+        return db.query(
+          "SELECT * FROM comments WHERE author = 'rogersop' AND body = 'Thanks Gaben, very cool'"
+        );
+      })
+      .then(({ rows }) => {
+        expect(rows[0]).toEqual({
+          body: "Thanks Gaben, very cool",
+          votes: 0,
+          author: "rogersop",
+          article_id: 1,
+          comment_id: expect.any(Number),
+          created_at: expect.any(Date),
+        });
+      });
+  });
 });
