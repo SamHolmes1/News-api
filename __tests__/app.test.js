@@ -144,12 +144,67 @@ describe("GET /api/articles", () => {
   });
 });
 
-// describe("POST /api/articles/:article_id/comments", () => {
-//   test("Should return a status code 201 when given correct data", () => {
-//     const inputObject = {
-//       username: "lurker",
-//       body: "Thanks Gaben, very cool",
-//     };
-//     return request(app).post(inputObject).expect(201);
-//   });
-// });
+describe("POST /api/articles/:article_id/comments", () => {
+  test("Should return a status code 201 when given correct data", () => {
+    const inputObject = {
+      username: "lurker",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(201);
+  });
+  test("Should return a message when an entry is created", () => {
+    const inputObject = {
+      username: "lurker",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Entry created");
+      });
+  });
+  test("Should return a 400 when given incorrect keys", () => {
+    const inputObject = {
+      name: "lurker",
+      text: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Should return a 400 when given incorrect key types", () => {
+    const inputObject = {
+      username: 52,
+      text: [1, 2, 3],
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Should return a 404 when given parameter that does not exist", () => {
+    const inputObject = {
+      username: "lurker",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/20000/comments")
+      .send(inputObject)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("20000 does not exist");
+      });
+  });
+});

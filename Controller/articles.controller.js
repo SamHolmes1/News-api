@@ -4,6 +4,8 @@ const {
   createNewComment,
 } = require("../Models/articles.models");
 
+const { checkExists } = require("../mvc.utils");
+
 exports.getArticleById = function (req, res, next) {
   queryByArticleId(req.params)
     .then((data) => {
@@ -19,7 +21,20 @@ exports.getAllArticles = function (_req, res) {
 };
 
 exports.postNewComment = function (req, res, next) {
-  //Make a query to the users database
-  //Make a query to the articles database
-  //Evaluate these promises
+  const article_id = req.params.article_id;
+  const { username, body } = req.body;
+  if (typeof username === "string" && typeof body === "string") {
+    const promises = [
+      checkExists("users", "username", username),
+      checkExists("articles", "article_id", article_id),
+    ];
+
+    Promise.all(promises)
+      .then(() => {
+        res.status(201).send({ msg: "Entry created" });
+      })
+      .catch(next);
+  } else {
+    res.status(400).send({ msg: "Bad request" });
+  }
 };

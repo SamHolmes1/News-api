@@ -8,8 +8,12 @@ const {
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
+
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
+
+//Middleware for handling incoming json data
+app.use(express.json());
 
 //Create an entry in LOG_PATH everytime a request is recieved
 app.use((req, _res, next) => {
