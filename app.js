@@ -7,6 +7,7 @@ const {
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
+const { getCommentsById } = require("./Controller/comments.controller");
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
 
@@ -29,6 +30,8 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getAllArticles);
 
 app.get("/api/articles/:article_id", getArticleById);
+
+app.get("/api/articles/:article_id/comments", getCommentsById);
 
 app.get("/api", getEndPoints);
 
