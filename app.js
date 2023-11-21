@@ -7,9 +7,14 @@ const {
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
+const { postNewComment } = require("./Controller/comments.controller");
+
 const { getCommentsById } = require("./Controller/comments.controller");
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
+
+//Middleware for handling incoming json data
+app.use(express.json());
 
 //Create an entry in LOG_PATH everytime a request is recieved
 app.use((req, _res, next) => {
@@ -24,7 +29,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-//Endpoints
+//Get Endpoints
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles", getAllArticles);
@@ -34,6 +39,9 @@ app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getCommentsById);
 
 app.get("/api", getEndPoints);
+
+//Post Endpoints
+app.post("/api/articles/:article_id/comments", postNewComment);
 
 //Handle unrouted urls
 app.all("*", (_req, res) => {

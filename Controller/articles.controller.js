@@ -1,6 +1,7 @@
 const {
   queryByArticleId,
   queryAllArticles,
+  createNewComment,
 } = require("../Models/articles.models");
 
 exports.getArticleById = function (req, res, next) {

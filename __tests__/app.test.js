@@ -200,3 +200,93 @@ describe("GET /api/articles", () => {
       });
   });
 });
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("Should return a status code 201 when given correct data", () => {
+    const inputObject = {
+      username: "lurker",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(201);
+  });
+  test("Should return a message when an entry is created", () => {
+    const inputObject = {
+      username: "lurker",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Entry created");
+      });
+  });
+  test("Should return a 400 when given incorrect keys", () => {
+    const inputObject = {
+      name: "lurker",
+      text: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Should return a 400 when given incorrect key types", () => {
+    const inputObject = {
+      username: 52,
+      text: [1, 2, 3],
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Should return a 404 when given parameter that does not exist", () => {
+    const inputObject = {
+      username: "lurker",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/20000/comments")
+      .send(inputObject)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("20000 does not exist");
+      });
+  });
+  test("Should create a new entry into the database", () => {
+    const inputObject = {
+      username: "rogersop",
+      body: "Thanks Gaben, very cool",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(inputObject)
+      .expect(201)
+      .then(() => {
+        return db.query(
+          "SELECT * FROM comments WHERE author = 'rogersop' AND body = 'Thanks Gaben, very cool'"
+        );
+      })
+      .then(({ rows }) => {
+        expect(rows[0]).toEqual({
+          body: "Thanks Gaben, very cool",
+          votes: 0,
+          author: "rogersop",
+          article_id: 1,
+          comment_id: expect.any(Number),
+          created_at: expect.any(Date),
+        });
+      });
+  });
+});
