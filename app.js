@@ -4,6 +4,7 @@ const fs = require("fs/promises");
 const {
   getArticleById,
   getAllArticles,
+  postNewComment,
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
@@ -23,7 +24,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-//Endpoints
+//Get Endpoints
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles", getAllArticles);
@@ -31,6 +32,9 @@ app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api", getEndPoints);
+
+//Post Endpoints
+app.post("/api/articles/:article_id/comments", postNewComment);
 
 //Handle unrouted urls
 app.all("*", (_req, res) => {

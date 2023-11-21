@@ -143,3 +143,13 @@ describe("GET /api/articles", () => {
       });
   });
 });
+
+// describe("POST /api/articles/:article_id/comments", () => {
+//   test("Should return a status code 201 when given correct data", () => {
+//     const inputObject = {
+//       username: "lurker",
+//       body: "Thanks Gaben, very cool",
+//     };
+//     return request(app).post(inputObject).expect(201);
+//   });
+// });

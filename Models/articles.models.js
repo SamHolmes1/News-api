@@ -32,3 +32,5 @@ exports.queryAllArticles = function () {
       return { articles: rows };
     });
 };
+
+exports.createNewComment = function () {};
