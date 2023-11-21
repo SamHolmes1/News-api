@@ -1,7 +1,10 @@
 const express = require("express");
 const fs = require("fs/promises");
 
-const { getArticleById } = require("./Controller/articles.controller");
+const {
+  getArticleById,
+  getAllArticles,
+} = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
 const { getCommentsById } = require("./Controller/comments.controller");
@@ -23,6 +26,8 @@ app.use((req, _res, next) => {
 
 //Endpoints
 app.get("/api/topics", getTopics);
+
+app.get("/api/articles", getAllArticles);
 
 app.get("/api/articles/:article_id", getArticleById);
 
