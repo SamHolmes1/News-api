@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const format = require("pg-format");
 
 exports.queryByArticleId = function (param) {
   if (isNaN(+param.article_id)) {
@@ -30,4 +31,19 @@ exports.queryAllArticles = function () {
     .then(({ rows }) => {
       return { articles: rows };
     });
+};
+
+exports.modifyArticleVotes = function (article_id, inc_votes) {
+  if (isNaN(+inc_votes)) {
+    // Check data type before passing to the database to keep malformed data away from the database
+    return Promise.reject({ status: 400, msg: "Invalid parameter" });
+  }
+  query = format(
+    "UPDATE articles SET votes = votes + %L WHERE article_id = %L RETURNING votes;",
+    [inc_votes],
+    [article_id]
+  );
+  return db.query(query).then(({ rows }) => {
+    return rows[0].votes;
+  });
 };

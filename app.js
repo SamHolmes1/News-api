@@ -4,6 +4,7 @@ const fs = require("fs/promises");
 const {
   getArticleById,
   getAllArticles,
+  patchArticleVotes,
 } = require("./Controller/articles.controller");
 const { handleInvalidQuery } = require("./errorhandler");
 const { getTopics, getEndPoints } = require("./Controller/topics.controller");
@@ -48,6 +49,7 @@ app.get("/api", getEndPoints);
 app.post("/api/articles/:article_id/comments", postNewComment);
 
 //Patch Endpoints
+app.patch("/api/articles/:article_id", patchArticleVotes);
 
 //Delete Endpoints
 app.delete("/api/comments/:comment_id", deleteCommentById);
