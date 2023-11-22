@@ -342,6 +342,29 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
+describe("GET /api/users", () => {
+  test("Should return a status 200 when sent GET request", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = testData;
+        expect(body.users).toEqual(users);
+      });
+  });
+  test("Should return unaltered data when given query", () => {
+    return request(app)
+      .get("/api/users?secrets=YesPlease")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = testData;
+        expect(body.users).toEqual(users);
+      });
+  });
+  test("Should return a status code of 404 when given parameter", () => {
+    return request(app).get("/api/users/2").expect(404);
+  });
+});
 describe("DELETE /api/comments/:comment_id", () => {
   test("Should return status code 200 when given valid comment_id", () => {
     return request(app)

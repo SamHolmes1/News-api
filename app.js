@@ -14,6 +14,7 @@ const {
 } = require("./Controller/comments.controller");
 
 const { getCommentsById } = require("./Controller/comments.controller");
+const { getAllUsers } = require("./Controller/users.controller");
 
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
@@ -33,7 +34,7 @@ app.use((req, _res, next) => {
   );
   next();
 });
-
+app.get("/api/users", getAllUsers);
 //Get Endpoints
 app.get("/api/topics", getTopics);
 
