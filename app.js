@@ -12,7 +12,6 @@ const {
   postNewComment,
   deleteCommentById,
 } = require("./Controller/comments.controller");
-
 const { getCommentsById } = require("./Controller/comments.controller");
 const { getAllUsers } = require("./Controller/users.controller");
 
