@@ -199,6 +199,41 @@ describe("GET /api/articles", () => {
         expect(body.articles).toBeSortedBy("created_at", { descending: true });
       });
   });
+  test("Should return object of articles filtered by query mitch", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .then(({ body }) => {
+        body.articles.forEach((element) => {
+          expect(element).toMatchObject({
+            title: expect.any(String),
+            topic: "mitch",
+            author: expect.any(String),
+            created_at: expect.any(String),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(String),
+          });
+        });
+      });
+  });
+  test("Should return object of articles filtered by query cats", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .then(({ body }) => {
+        body.articles.forEach((element) => {
+          expect(element).toMatchObject({
+            title: expect.any(String),
+            topic: "cats",
+            author: expect.any(String),
+            created_at: expect.any(String),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(String),
+          });
+        });
+      });
+  });
+  test("Should return a status code of 404 when given invalid query", () => {
+    return request(app).get("/api/articles?topic=abcdefg").expect(404);
+  });
 });
 
 describe("POST /api/articles/:article_id/comments", () => {
