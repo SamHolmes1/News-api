@@ -1,4 +1,7 @@
-const { createNewComment } = require("../Models/comments.model");
+const {
+  createNewComment,
+  removeCommentsById,
+} = require("../Models/comments.model");
 const { queryCommentsByArticleId } = require("../Models/comments.model");
 const { checkExists } = require("../mvc.utils");
 
@@ -35,6 +38,21 @@ exports.getCommentsById = function (req, res, next) {
   Promise.all(promises)
     .then((data) => {
       res.status(200).send({ comments: data[1] });
+    })
+    .catch(next);
+};
+
+exports.deleteCommentById = function (req, res, next) {
+  const comment_id = req.params.comment_id;
+
+  const promises = [
+    checkExists("comments", "comment_id", comment_id),
+    removeCommentsById(comment_id),
+  ];
+
+  Promise.all(promises)
+    .then(() => {
+      res.status(204).send({});
     })
     .catch(next);
 };

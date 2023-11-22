@@ -341,3 +341,31 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(404);
   });
 });
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("Should return status code 200 when given valid comment_id", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+  test("Should return status code 404 when given out of bounds comment_id", () => {
+    return request(app).delete("/api/comments/4000").expect(404);
+  });
+  test("Should return status code 400 when given comment_id of incorrect type", () => {
+    return request(app).delete("/api/comments/Inject").expect(400);
+  });
+  test("Test that the entry has been deleted from the database", () => {
+    return request(app)
+      .delete("/api/comments/2")
+      .expect(204)
+      .then(() => {
+        return db.query("SELECT * FROM comments WHERE comment_id = 2");
+      })
+      .then(({ rows }) => {
+        expect(rows).toEqual([]);
+      });
+  });
+});
