@@ -3,6 +3,7 @@ const {
   queryAllArticles,
   modifyArticleVotes,
 } = require("../Models/articles.models");
+const format = require("pg-format");
 const { checkExists } = require("../mvc.utils");
 
 exports.getArticleById = function (req, res, next) {
@@ -13,10 +14,12 @@ exports.getArticleById = function (req, res, next) {
     .catch(next);
 };
 
-exports.getAllArticles = function (_req, res) {
-  queryAllArticles().then((data) => {
-    res.status(200).send(data);
-  });
+exports.getAllArticles = function (req, res, next) {
+  queryAllArticles(req.query.topic)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch(next);
 };
 
 exports.patchArticleVotes = function (req, res, next) {
