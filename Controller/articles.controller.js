@@ -15,10 +15,7 @@ exports.getArticleById = function (req, res, next) {
 };
 
 exports.getAllArticles = function (req, res, next) {
-  const input = req.query.topic
-    ? format("articles.topic = %L", [req.query.params])
-    : "articles.article_id = comments.article_id";
-  queryAllArticles(input)
+  queryAllArticles(req.query.topic)
     .then((data) => {
       res.status(200).send(data);
     })

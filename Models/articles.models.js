@@ -19,6 +19,10 @@ exports.queryByArticleId = function (param) {
 };
 
 exports.queryAllArticles = function (input) {
+  const queryString = input
+    ? format("articles.topic = %L", [input])
+    : "articles.article_id = comments.article_id";
+
   const query = format(
     `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id) AS comment_count 
   FROM comments 
@@ -26,9 +30,12 @@ exports.queryAllArticles = function (input) {
   ON %s
   GROUP BY articles.article_id
   ORDER BY articles.created_at DESC;`,
-    [input]
+    [queryString]
   );
   return db.query(query).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "topic no found" });
+    }
     return { articles: rows };
   });
 };

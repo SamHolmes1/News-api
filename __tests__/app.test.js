@@ -231,6 +231,9 @@ describe("GET /api/articles", () => {
         });
       });
   });
+  test("Should return a status code of 404 when given invalid query", () => {
+    return request(app).get("/api/articles?topic=abcdefg").expect(404);
+  });
 });
 
 describe("POST /api/articles/:article_id/comments", () => {
