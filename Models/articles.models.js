@@ -9,12 +9,12 @@ exports.queryByArticleId = function (param) {
   return db
     .query(
       `SELECT articles.author, articles.body, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id) AS comment_count 
-    FROM comments 
-    INNER JOIN articles 
-    ON articles.article_id = comments.article_id
-    AND articles.article_id = $1
-    GROUP BY articles.article_id
-    ORDER BY articles.created_at DESC;`,
+       FROM comments 
+       INNER JOIN articles 
+       ON articles.article_id = comments.article_id
+       AND articles.article_id = $1
+       GROUP BY articles.article_id
+       ORDER BY articles.created_at DESC;`,
       [param.article_id]
     )
     .then(({ rows }) => {
@@ -28,24 +28,25 @@ exports.queryByArticleId = function (param) {
 };
 
 exports.queryAllArticles = function (input) {
+  //Check if the to filter by topic exists, structure our query accordingly.
   const queryString = input
     ? format("articles.topic = %L", [input])
     : "articles.article_id = comments.article_id";
 
   const query = format(
     `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id) AS comment_count 
-  FROM comments 
-  INNER JOIN articles 
-  ON %s
-  GROUP BY articles.article_id
-  ORDER BY articles.created_at DESC;`,
+     FROM comments 
+     INNER JOIN articles 
+     ON %s
+     GROUP BY articles.article_id
+     ORDER BY articles.created_at DESC;`,
     [queryString]
   );
   return db.query(query).then(({ rows }) => {
     if (rows.length === 0) {
       return Promise.reject({ status: 404, msg: "topic no found" });
     }
-    return { articles: rows };
+    return rows;
   });
 };
 

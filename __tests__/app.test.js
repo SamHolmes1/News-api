@@ -22,8 +22,8 @@ describe("GET /api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then(({ body }) => {
-        if (body.length > 0) {
-          body.forEach((element) => {
+        if (body.topics.length > 0) {
+          body.topics.forEach((element) => {
             expect(element).toMatchObject({
               slug: expect.any(String),
               description: expect.any(String),
@@ -51,7 +51,7 @@ describe("GET /api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toMatchObject({
+        expect(body.articles).toMatchObject({
           title: expect.any(String),
           topic: expect.any(String),
           author: expect.any(String),
@@ -89,7 +89,7 @@ describe("GET /api", () => {
       .get("/api")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toEqual(endpoints);
+        expect(body.endpoints).toEqual(endpoints);
       });
   });
   test("Should return a status code of 404 when given a query", () => {
@@ -384,8 +384,8 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        const { users } = testData;
-        expect(body.users).toEqual(users);
+        const { userData } = testData;
+        expect(body.users).toEqual(userData);
       });
   });
   test("Should return unaltered data when given query", () => {
@@ -393,8 +393,8 @@ describe("GET /api/users", () => {
       .get("/api/users?secrets=YesPlease")
       .expect(200)
       .then(({ body }) => {
-        const { users } = testData;
-        expect(body.users).toEqual(users);
+        const { userData } = testData;
+        expect(body.users).toEqual(userData);
       });
   });
   test("Should return a status code of 404 when given parameter", () => {

@@ -25,5 +25,54 @@
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves an array containing a single article corresponding to the parameter",
+    "queries": [],
+    "exampleResponse": {
+      "topics": [{ "slug": "football", "description": "Footie!" }]
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array containing all comments with a corresponding article_id",
+    "queries": [],
+    "exampleResponse": {
+      "topics": [
+        {
+          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          "votes": 16,
+          "author": "butter_bridge",
+          "article_id": 9,
+          "created_at": 1586179020000
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Creates a new comment attatched to the given article_id",
+    "queries": [],
+    "example body": {
+      "username": "lurker",
+      "body": "Thanks Gaben, very cool"
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Updates the votes value on the given article_id",
+    "queries": [],
+    "example body": { "inc_votes": 5 }
+  },
+  "GET /api/users": {
+    "description": "Updated the ",
+    "queries": [],
+    "example body": {
+      "username": "butter_bridge",
+      "name": "jonny",
+      "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Updates the votes value on the given article_id",
+    "queries": [],
+    "example body": {}
   }
 }

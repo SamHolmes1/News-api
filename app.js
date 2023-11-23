@@ -1,19 +1,21 @@
 const express = require("express");
 const fs = require("fs/promises");
 
+//Controllers
 const {
   getArticleById,
   getAllArticles,
   patchArticleVotes,
 } = require("./Controller/articles.controller");
-const { handleInvalidQuery } = require("./errorhandler");
-const { getTopics, getEndPoints } = require("./Controller/topics.controller");
 const {
   postNewComment,
   deleteCommentById,
 } = require("./Controller/comments.controller");
+const { getTopics, getEndPoints } = require("./Controller/topics.controller");
 const { getCommentsById } = require("./Controller/comments.controller");
 const { getAllUsers } = require("./Controller/users.controller");
+//Error handlers
+const { handleInvalidQuery } = require("./errorhandler");
 
 const LOG_PATH = `${__dirname}/logfiles/log.txt`;
 const app = express();
@@ -33,6 +35,7 @@ app.use((req, _res, next) => {
   );
   next();
 });
+
 //Get Endpoints
 app.get("/api/topics", getTopics);
 
@@ -45,6 +48,7 @@ app.get("/api/articles/:article_id/comments", getCommentsById);
 app.get("/api", getEndPoints);
 
 app.get("/api/users", getAllUsers);
+
 //Post Endpoints
 app.post("/api/articles/:article_id/comments", postNewComment);
 
@@ -54,7 +58,7 @@ app.patch("/api/articles/:article_id", patchArticleVotes);
 //Delete Endpoints
 app.delete("/api/comments/:comment_id", deleteCommentById);
 
-//Handle unrouted urls
+//Unrouted Endpoints
 app.all("*", (_req, res) => {
   res.status(404).send({ msg: "Endpoint does not exist!" });
 });
