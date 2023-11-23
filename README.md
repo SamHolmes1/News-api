@@ -8,13 +8,13 @@ Make sure to run `npm install` to download all dependencies. A list of dependend
 
 ### .ENV files
 
-After setup, you'll want to create two files;
+After setup, you'll want to create three files;
 
 ```bash
-touch .env.development .env.test
+touch .env.development .env.test .env.production
 ```
 
-Inside of each you want to set the environment variable PGDATABASE to your development and test databases respectivley
+Inside of each you want to set the environment variable PGDATABASE to your development, test and production databases respectivley
 
 ### Log files
 
