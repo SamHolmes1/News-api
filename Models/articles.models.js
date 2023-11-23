@@ -27,11 +27,17 @@ exports.queryByArticleId = function (param) {
     });
 };
 
-exports.queryAllArticles = function (topicQuery) {
+exports.queryAllArticles = function (topicQuery, sortByQuery, orderQuery) {
   //Check if the to filter by topic exists, structure our query accordingly.
   const topicQueryString = topicQuery
     ? format("articles.topic = %L", [topicQuery])
     : "articles.article_id = comments.article_id";
+
+  const sortByQueryString = sortByQuery
+    ? format("articles.%I", [sortByQuery])
+    : "articles.created_at";
+
+  const orderQueryString = orderQuery === "asc" ? "ASC" : "DESC";
 
   const query = format(
     `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id) AS comment_count 
@@ -39,8 +45,10 @@ exports.queryAllArticles = function (topicQuery) {
      INNER JOIN articles 
      ON %s
      GROUP BY articles.article_id
-     ORDER BY articles.created_at DESC;`,
-    [topicQueryString]
+     ORDER BY %s %s;`,
+    [topicQueryString],
+    [sortByQueryString],
+    [orderQueryString]
   );
   return db.query(query).then(({ rows }) => {
     if (rows.length === 0) {
