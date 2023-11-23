@@ -1,10 +1,41 @@
 # News-APi
 
-A news api that uses express and postgresql.
+A news api that uses express and postgresql. It serves articles, users and comments from a psql database.
 
 ## Setup
 
-Make sure to run `npm install` to download all dependencies. A list of dependendencies can be found in package.json
+This api has been tested on: \
+Ubuntu 20.04 \
+Postgresql 12.16 \
+Node 18.18
+
+1. First clone down the repo
+
+```bash
+git clone https://github.com/SamHolmes1/News-api
+```
+
+2. Install dependencies to your new local repo
+
+```bash
+cd News-api/
+
+npm install
+```
+
+3. Setup the local databases
+
+```bash
+npm run setup-dbs
+
+npm run seed #Populate the production database
+```
+
+4. Run tests
+
+```bash
+npm run test # This will populate the test database, see app.test.js
+```
 
 ### .ENV files
 
@@ -15,10 +46,6 @@ touch .env.development .env.test .env.production
 ```
 
 Inside of each you want to set the environment variable PGDATABASE to your development, test and production databases respectivley
-
-### Log files
-
-It's important that you create a logfiles folder for the express middleware to write to. This feature can be disabled by simply commenting out the middleware from the top of app.js
 
 ## Endpoints
 
