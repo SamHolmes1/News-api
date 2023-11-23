@@ -232,8 +232,34 @@ describe("GET /api/articles", () => {
         });
       });
   });
+  test("should return articles in ascending order", () => {
+    return request(app)
+      .get("/api/articles?order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("created_at", { ascending: true });
+      });
+  });
+  test("should return articles sorted by title", () => {
+    return request(app)
+      .get("/api/articles?sort_by=title")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("title", { descending: true });
+      });
+  });
+  test("should return articles sorted by authors ascending", () => {
+    return request(app)
+      .get("/api/articles?sort_by=author&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("author", { ascending: true });
+      });
+  });
   test("Should return a status code of 404 when given invalid query", () => {
-    return request(app).get("/api/articles?topic=abcdefg").expect(404);
+    return request(app)
+      .get("/api/articles?topic=abcdefg&order=up&sort_by=passwords")
+      .expect(404);
   });
 });
 
