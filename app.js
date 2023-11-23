@@ -17,7 +17,7 @@ const { getAllUsers } = require("./Controller/users.controller");
 //Error handlers
 const { handleInvalidQuery } = require("./errorhandler");
 
-const LOG_PATH = `${__dirname}/logfiles/log.txt`;
+const LOG_PATH = `${__dirname}/log.txt`;
 const app = express();
 
 //Middleware for handling incoming json data
