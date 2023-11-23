@@ -27,10 +27,10 @@ exports.queryByArticleId = function (param) {
     });
 };
 
-exports.queryAllArticles = function (input) {
+exports.queryAllArticles = function (topicQuery) {
   //Check if the to filter by topic exists, structure our query accordingly.
-  const queryString = input
-    ? format("articles.topic = %L", [input])
+  const topicQueryString = topicQuery
+    ? format("articles.topic = %L", [topicQuery])
     : "articles.article_id = comments.article_id";
 
   const query = format(
@@ -40,7 +40,7 @@ exports.queryAllArticles = function (input) {
      ON %s
      GROUP BY articles.article_id
      ORDER BY articles.created_at DESC;`,
-    [queryString]
+    [topicQueryString]
   );
   return db.query(query).then(({ rows }) => {
     if (rows.length === 0) {
