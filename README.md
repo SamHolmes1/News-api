@@ -2,6 +2,8 @@
 
 A news api that uses express and postgresql. It serves articles, users and comments from a psql database.
 
+A live version can be accessed here: https://news-api-ej82.onrender.com/
+
 ## Setup
 
 This api has been tested on: \
