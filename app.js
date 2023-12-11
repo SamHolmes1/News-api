@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs/promises");
+const cors = require("cors");
 
 //Controllers
 const {
@@ -19,6 +20,9 @@ const { handleInvalidQuery } = require("./errorhandler");
 
 const LOG_PATH = `${__dirname}/log.txt`;
 const app = express();
+
+//Middleware for enabling cross origin resource
+app.use(cors());
 
 //Middleware for handling incoming json data
 app.use(express.json());
